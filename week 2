@@ -1,0 +1,109 @@
+Week 2 — Security Planning & Testing Methodology
+← Week 1 | Week 2 | Week 3 →
+Overview
+Week 2 focuses on designing a security baseline and defining a structured performance testing methodology before implementing any security controls. This planning-first approach ensures that security configurations are measurable, repeatable, and aligned with real-world operating system security practices.
+The goal of this phase is to identify realistic threats, define mitigation strategies, and establish how system performance and security effectiveness will be evaluated throughout the coursework.
+Objectives
+The objectives for Week 2 are to:
+Design a comprehensive operating system security baseline
+Identify realistic security threats relevant to a Linux server
+Define mitigation strategies for identified threats
+Plan a structured performance testing methodology
+Define metrics, tools, and evidence collection strategies
+Performance Testing Plan
+To evaluate operating system behaviour under different workloads, performance testing will be conducted remotely from the workstation using SSH-based monitoring tools. Testing will be performed in a controlled and repeatable manner to ensure reliable results.
+Testing Approach
+Performance testing will be carried out in the following stages:
+Baseline Testing
+Measure system performance when the server is idle with only essential services running.
+Application Load Testing
+Measure resource usage while running selected workload applications.
+Bottleneck Identification
+Analyse collected data to identify CPU, memory, disk I/O, or network constraints.
+Optimisation Testing
+Apply configuration or tuning changes and re-test to quantify improvements.
+Performance Metrics
+The following metrics will be monitored where appropriate:
+CPU utilisation (%)
+Memory usage (used, free, cache)
+Disk usage and I/O throughput
+Network latency and throughput
+System load averages
+Service response times
+Monitoring Tools
+Performance data will be collected using standard Linux command-line utilities executed remotely via SSH:
+top / htop — CPU and process monitoring
+free — memory usage
+df and iostat — disk usage and I/O performance
+ip, ss, ping — network monitoring
+Custom monitoring scripts (developed in later weeks)
+All monitoring will be performed without installing a graphical interface on the server.
+Security Configuration Checklist
+The following checklist defines the mandatory security controls to be implemented in later phases of the coursework:
+SSH Security
+Disable password-based authentication
+Enable key-based authentication
+Restrict SSH access to a single trusted workstation
+Change default SSH configuration where appropriate
+Disable root SSH login
+Firewall Configuration
+Enable host-based firewall (UFW)
+Allow SSH traffic only from the workstation IP
+Deny all other inbound connections by default
+Verify firewall rules after configuration
+Mandatory Access Control
+Enable and configure AppArmor (or SELinux)
+Verify enforcement mode is active
+Monitor and log access control violations
+Automatic Updates
+Enable unattended security updates
+Verify update service is running and scheduled
+Ensure minimal disruption to system availability
+User Privilege Management
+Create a non-root administrative user
+Enforce least-privilege access using sudo
+Remove unnecessary default users
+Audit user and group permissions
+Network Security
+Minimise exposed network services
+Verify listening ports and services
+Ensure unnecessary services are disabled
+Threat Model
+A threat model was developed to identify realistic risks to the Linux server and define appropriate mitigation strategies.
+Threat 1: Brute-Force SSH Attacks
+Description: Attackers attempt to gain access by guessing SSH credentials.
+Impact: Unauthorised system access and potential data compromise.
+Mitigation:
+Disable password authentication
+Use SSH key-based authentication
+Restrict SSH access by IP
+Deploy fail2ban for intrusion detection
+Threat 2: Exploitation of Vulnerable Services
+Description: Outdated or unnecessary services may contain exploitable vulnerabilities.
+Impact: Remote code execution or privilege escalation.
+Mitigation:
+Enable automatic security updates
+Remove unnecessary services
+Regularly audit running services
+Use firewall rules to restrict access
+Threat 3: Misuse of Excessive Privileges
+Description: Users with unnecessary administrative privileges increase risk.
+Impact: Accidental or malicious system misconfiguration.
+Mitigation:
+Enforce least-privilege principles
+Use sudo for administrative tasks
+Monitor authentication and privilege escalation logs
+Evidence and Documentation Strategy
+To support later analysis and assessment requirements:
+All configuration changes will be documented with before-and-after comparisons
+Screenshots will include visible terminal prompts (username@hostname)
+Logs and command outputs will be captured and referenced
+Performance data will be recorded in structured tables
+Graphs and charts will be generated from collected data
+Learning Outcome Alignment
+LO3: Addressed through threat modelling and planned implementation of security controls to mitigate operating system vulnerabilities.
+LO4: Demonstrated through planned use of command-line tools for monitoring, auditing, and configuration.
+LO5: Addressed by evaluating security versus performance trade-offs introduced by hardening measures.
+Reflection (Week 2)
+This week emphasised the importance of planning security and performance evaluation before system configuration. Developing a structured threat model and security checklist ensures that security controls are not applied arbitrarily but are instead driven by identified risks.
+Additionally, defining a clear performance testing methodology establishes a baseline against which the impact of security hardening and optimisation can be quantitatively measured in later weeks.

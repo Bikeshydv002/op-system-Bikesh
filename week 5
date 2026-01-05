@@ -1,0 +1,109 @@
+Week 5 — Advanced Security and Monitoring Infrastructure
+← Week 4 | Week 5 | Week 6 →
+Overview
+Week 5 focuses on implementing advanced security controls and developing server monitoring infrastructure. This includes enforcing mandatory access control, automating updates, deploying intrusion detection, and creating scripts to verify security configurations and collect performance metrics remotely.
+All configurations and monitoring are performed via SSH from the workstation to the headless server.
+Objectives
+Implement mandatory access control using AppArmor or SELinux
+Enable automated security updates
+Configure fail2ban for intrusion detection
+Develop security-baseline.sh to verify system security
+Develop monitor-server.sh for remote performance monitoring
+Document all commands, outputs, and configuration changes
+Mandatory Access Control (AppArmor)
+Installed and enabled AppArmor:
+sudo apt install -y apparmor apparmor-utils
+sudo systemctl enable apparmor
+sudo systemctl start apparmor
+sudo aa-status
+Verified enforced profiles for system applications:
+sudo aa-enforce /etc/apparmor.d/*
+Evidence:
+aa-status output showing profiles in enforce mode
+Logs of any access denials captured
+Learning:
+AppArmor enforces least-privilege access per process, reducing the impact of exploited services
+Automated Security Updates
+Installed unattended-upgrades package:
+sudo apt install -y unattended-upgrades
+sudo dpkg-reconfigure --priority=low unattended-upgrades
+Verified automatic updates are scheduled and enabled:
+systemctl status unattended-upgrades
+Evidence:
+Screenshot showing active unattended-upgrades service
+Logs confirming recent security updates applied
+Intrusion Detection with fail2ban
+Installed fail2ban:
+sudo apt install -y fail2ban
+Configured jail for SSH:
+sudo nano /etc/fail2ban/jail.local
+# [sshd]
+# enabled = true
+# port = ssh
+# filter = sshd
+# logpath = /var/log/auth.log
+# maxretry = 3
+Restarted fail2ban service:
+sudo systemctl restart fail2ban
+sudo fail2ban-client status sshd
+Evidence:
+Screenshot showing active fail2ban jail and banned IPs
+Logs showing blocked failed login attempts
+Security Baseline Verification Script (security-baseline.sh)
+Purpose:
+Verify all security configurations implemented in Weeks 4–5
+Check SSH settings, firewall rules, AppArmor status, fail2ban, and user privileges
+Example Script Snippet:
+#!/bin/bash
+# security-baseline.sh
+# Verifies server security configuration
+
+echo "Checking SSH configuration..."
+grep -E "PermitRootLogin|PasswordAuthentication" /etc/ssh/sshd_config
+
+echo "Checking firewall status..."
+sudo ufw status verbose
+
+echo "Checking AppArmor profiles..."
+sudo aa-status
+
+echo "Checking fail2ban status..."
+sudo fail2ban-client status sshd
+
+echo "Checking admin user privileges..."
+sudo -l -U adminuser
+Evidence:
+Script executed via SSH from workstation
+Terminal outputs showing pass/fail for each check
+Remote Monitoring Script (monitor-server.sh)
+Purpose:
+Collect server performance metrics remotely from the workstation
+Automate monitoring for CPU, memory, disk I/O, and network usage
+Example Script Snippet:
+#!/bin/bash
+# monitor-server.sh
+# Collects remote server metrics
+
+SERVER="adminuser@192.168.56.103"
+
+echo "CPU Usage:"
+ssh $SERVER "top -b -n1 | head -10"
+
+echo "Memory Usage:"
+ssh $SERVER "free -h"
+
+echo "Disk Usage:"
+ssh $SERVER "df -h"
+
+echo "Network Connections:"
+ssh $SERVER "ss -tuln"
+Evidence:
+Screenshots of metrics collected via SSH
+Logged outputs stored for later performance analysis
+Learning Outcome Alignment
+LO3: Advanced security configurations mitigate identified threats from Week 2
+LO4: Scripts demonstrate proficiency in command-line automation and remote administration
+LO5: Monitoring strategy supports trade-off analysis between security and performance
+Reflection (Week 5)
+This week demonstrated the value of layered security controls and automated monitoring. AppArmor enforces access restrictions, fail2ban protects against brute-force attacks, and unattended upgrades reduce exposure to vulnerabilities. Creating scripts not only automates verification but also ensures repeatable and auditable administration.
+Remote monitoring prepares the groundwork for performance evaluation in Week 6, making system behavior transparent under different workloads.

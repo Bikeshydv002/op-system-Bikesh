@@ -1,0 +1,69 @@
+Week 4 — Initial System Configuration & Security Implementation
+← Week 3 | Week 4 | Week 5 →
+Overview
+Week 4 focuses on the initial configuration of the server and implementing foundational security controls. This phase establishes secure remote administration via SSH, sets up firewall rules, manages users and privileges, and ensures that all configurations are documented with evidence for assessment purposes.
+All server configuration is performed remotely via SSH from the Ubuntu Desktop workstation.
+Objectives
+Configure SSH with key-based authentication and disable password login
+Implement firewall rules restricting access to the server
+Create a non-root administrative user with least-privilege access
+Verify remote administration and system configuration
+Capture evidence of all configurations and operations
+SSH Configuration
+Steps Taken:
+Generated SSH key pair on the workstation:
+ssh-keygen -t ed25519 -C "studentID@ubuntu-workstation"
+Copied the public key to the server:
+ssh-copy-id -i ~/.ssh/id_ed25519.pub user@192.168.56.103
+Disabled password authentication and root login:
+sudo nano /etc/ssh/sshd_config
+# Set:
+# PasswordAuthentication no
+# PermitRootLogin no
+Restarted SSH service:
+sudo systemctl restart ssh
+Evidence:
+SSH connection verified from workstation to server using key-based authentication
+Screenshot showing terminal with username@server-hostname prompt
+Firewall Configuration
+Ubuntu Server firewall (UFW) was configured to restrict access only to the workstation.
+Firewall Rules Implemented:
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow from 192.168.56.102 to any port 22 proto tcp
+sudo ufw enable
+sudo ufw status verbose
+Evidence:
+Firewall status screenshot (ufw status verbose)
+Verified SSH connectivity remains functional
+Attempted access from non-authorized IP blocked
+User Management and Privilege Enforcement
+Created a non-root administrative user:
+sudo adduser adminuser
+sudo usermod -aG sudo adminuser
+Removed or disabled unnecessary default users
+Verified privileges with sudo -l:
+sudo -l -U adminuser
+Evidence:
+Screenshots of user creation and privilege verification
+Commands executed via SSH from workstation
+Remote Administration Evidence
+All configuration and verification commands were executed remotely from the workstation via SSH:
+SSH login to server (ssh adminuser@192.168.56.103)
+Viewing system information (uname -a, df -h, free -h)
+Editing configuration files with nano or vim
+Applying firewall rules and checking status
+Evidence Screenshot Filename: week4.png
+Configuration File Documentation
+Configuration files captured for comparison:
+File	Purpose	Changes Made
+/etc/ssh/sshd_config	SSH configuration	Disabled root login, disabled password authentication
+/etc/ufw/user.rules	Firewall rules	Allowed SSH only from workstation IP
+/etc/sudoers or /etc/sudoers.d/adminuser	User privileges	Non-root admin user added with sudo rights
+Learning Outcome Alignment
+LO3: Security baseline partially implemented via SSH hardening and firewall configuration
+LO4: Demonstrated remote system administration using CLI tools
+LO5: Understood trade-offs between security (restricted SSH access) and convenience (remote management)
+Reflection (Week 4)
+Week 4 was focused on establishing a secure and manageable server foundation. SSH key-based authentication and strict firewall rules enhance security but introduce operational constraints. Creating a non-root administrative user enforces least-privilege principles, a critical practice in professional environments.
+Documenting each change and capturing evidence ensures reproducibility and allows later verification during audits.

@@ -1,0 +1,77 @@
+Week 3 — Application Selection for Performance Testing
+← Week 2 | Week 3 | Week 4 →
+Overview
+Week 3 focuses on selecting applications that represent different workload types for performance evaluation. The aim is to test how the Linux server behaves under varied CPU, memory, disk, and network loads. Application selection ensures a representative evaluation of system performance and supports optimisation in later weeks.
+All installations and configurations are carried out remotely via SSH from the workstation to the headless server.
+Objectives
+Identify applications for testing different workload types
+Classify applications by resource intensity (CPU, memory, I/O, network)
+Document installation procedures and commands
+Predict expected resource usage for each application
+Define monitoring strategies for each workload
+Application Selection Matrix
+Application	Workload Type	Justification for Selection
+stress-ng	CPU-intensive	Simulates high CPU load, configurable tests for benchmarking
+memtester	Memory-intensive	Tests RAM allocation and limits under load
+fio	Disk I/O-intensive	Measures read/write performance for storage analysis
+iperf3	Network-intensive	Evaluates network throughput and latency
+nginx	Server workload	Representative server application for response times and concurrency testing
+Installation Documentation
+All installations were executed remotely via SSH on the server. Example commands:
+# Update package list
+sudo apt update
+
+# CPU stress tool
+sudo apt install -y stress-ng
+
+# Memory testing tool
+sudo apt install -y memtester
+
+# Disk I/O benchmark tool
+sudo apt install -y fio
+
+# Network testing tool
+sudo apt install -y iperf3
+
+# Web server
+sudo apt install -y nginx
+Notes:
+All commands were executed on 192.168.56.103 from the workstation using SSH.
+sudo is used to execute administrative installations safely.
+Packages installed are LTS-supported versions from Ubuntu repositories.
+Expected Resource Profiles
+Application	Expected CPU Usage	Expected Memory Usage	Expected Disk I/O	Expected Network Load
+stress-ng	High (~80–100%)	Low	Minimal	None
+memtester	Moderate	High (depends on size)	Minimal	None
+fio	Low–Moderate	Low–Moderate	High	None
+iperf3	Low	Low	Low	High (network saturation)
+nginx	Moderate	Moderate	Moderate	Low–Moderate (HTTP requests)
+Monitoring Strategy
+Each workload application will be monitored to measure its impact on system resources using the following approach:
+CPU-intensive (stress-ng)
+Monitor using top, htop, and mpstat
+Record peak CPU load and average load
+Memory-intensive (memtester)
+Monitor using free -h, vmstat, and smem
+Record memory allocation, usage, and swap activity
+Disk I/O (fio)
+Monitor using iostat, df -h, and dstat
+Record throughput, latency, and IOPS
+Network-intensive (iperf3)
+Monitor using iperf3 client-server measurements, ping, ss
+Record latency, jitter, and throughput
+Server workload (nginx)
+Monitor using systemctl status nginx, top, netstat
+Measure response time under simulated load
+All monitoring commands will be executed via SSH, and results captured in tables and charts for performance analysis in Week 6.
+Evidence and Documentation
+Screenshots of installation commands with terminal prompts (username@server-hostname)
+Logs of package installation outputs
+Tables predicting resource usage for each workload
+Monitoring plan detailing tools and commands for performance metrics collection
+Learning Outcome Alignment
+LO4: Developing proficiency in using command-line tools for application installation and system monitoring
+LO5: Planning how different applications impact the system demonstrates understanding of performance trade-offs
+Reflection (Week 3)
+Week 3 provided a practical approach to categorising system workloads. Predicting resource usage helps identify potential bottlenecks in CPU, memory, disk, and network subsystems before actual testing.
+Careful planning ensures monitoring scripts and performance evaluations will be meaningful, reproducible, and aligned with the security-hardened environment prepared in previous weeks.

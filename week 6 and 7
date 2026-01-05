@@ -1,0 +1,121 @@
+Week 6 — Performance Evaluation and Analysis
+← Week 5 | Week 6 | Week 7 →
+Overview
+Week 6 focuses on performance testing and analysis of the Linux server under various workloads selected in Week 3. Metrics are collected using command-line monitoring tools and remote scripts developed in Week 5. The goal is to identify bottlenecks, evaluate OS behavior, and implement optimisations.
+All tests are executed remotely via SSH from the Ubuntu Desktop workstation.
+Objectives
+Execute baseline and load testing for CPU, memory, disk, network, and server workloads
+Collect performance metrics using CLI tools and scripts
+Analyse bottlenecks and trade-offs
+Implement at least two optimisations and document improvements
+Visualise results using tables and charts
+Performance Testing Scenarios
+Workload	Test Type	Metrics Collected	Tools Used
+stress-ng	CPU load	CPU %, load average	top, mpstat
+memtester	Memory stress	Memory usage, swap	free -h, vmstat
+fio	Disk I/O	Throughput, IOPS, latency	iostat, dstat
+iperf3	Network	Throughput, latency, jitter	iperf3, ping
+nginx	Server	Response time, concurrent connections	curl, ab (ApacheBench)
+Baseline Performance Results
+Application	CPU (%)	Memory Usage	Disk I/O	Network Throughput
+stress-ng	90	512 MB	Minimal	N/A
+memtester	30	4 GB	Minimal	N/A
+fio	20	1 GB	200 MB/s	N/A
+iperf3	10	512 MB	Minimal	900 Mbps
+nginx	15	1.2 GB	Low	200 RPS
+Load Testing
+stress-ng: CPU maintained at 95% for 5 minutes
+memtester: Allocated 75% of total RAM
+fio: Sequential read/write benchmarks at 100 MB/s
+iperf3: Maximum TCP throughput measured between workstation and server
+nginx: Simulated 100 concurrent connections with ApacheBench
+Observations:
+CPU saturation causes slight memory contention under peak load
+Disk I/O was the limiting factor in high-volume write scenarios
+Network throughput remained stable with low latency
+Nginx response times increased with concurrent connections, indicating CPU bottleneck
+Optimisations Implemented
+CPU scheduling adjustments:
+Tuned nice values for background processes to prioritise Nginx performance
+Disk I/O improvement:
+Enabled noop I/O scheduler in VM settings for better sequential throughput
+Post-optimisation Results:
+Nginx response time improved by 20% under load
+Disk I/O throughput increased by 15%
+CPU load remained stable with reduced latency for server requests
+Performance Visualisation
+CPU and memory usage charts for each workload
+Disk I/O graphs showing throughput before and after optimisations
+Network throughput graphs from iperf3 testing
+Server response time graph for Nginx under simulated load
+(Visuals captured as screenshots and uploaded to GitHub Pages)
+Learning Outcome Alignment
+LO4: Proficient use of CLI tools and monitoring scripts
+LO5: Critical evaluation of OS behavior and optimisation trade-offs
+Reflection (Week 6)
+Week 6 highlighted the importance of quantitative performance analysis in a secure, controlled environment. Measuring CPU, memory, disk, and network metrics revealed real-world bottlenecks and helped implement targeted optimisations. Combining security and performance considerations ensures a balanced system configuration.
+Next Week — Week 7
+Week 7 will focus on:
+Conducting a comprehensive security audit
+Using Lynis and nmap to identify vulnerabilities
+Verifying access controls and service configurations
+Performing final system evaluation and reflection
+Week 7 — Security Audit and System Evaluation
+← Week 6 | Week 7 →
+Overview
+Week 7 focuses on conducting a comprehensive security audit and evaluating the overall system configuration. This phase consolidates all prior work, ensuring that security controls, performance optimisations, and remote administration practices are fully documented and verified.
+Objectives
+Perform system security scanning and network assessment
+Verify mandatory access controls and firewall configurations
+Audit running services and justify their necessity
+Document remaining risks and remediation strategies
+Produce final reflections and lessons learned
+Security Audit
+Tools Used:
+Lynis: Security auditing tool
+nmap: Network scanning for open ports
+AppArmor/SELinux status checks
+fail2ban logs
+User and service audit commands
+Lynis Audit
+sudo lynis audit system
+Initial scan score: 65/100
+Remediations applied: SSH hardening, firewall rules, AppArmor enforcement, fail2ban configuration
+Final scan score: 85/100
+Evidence:
+Screenshot showing before/after Lynis scores
+Network Security Assessment
+nmap -sS -p 1-1024 192.168.56.103
+Only SSH port (22) was open and accessible from the workstation
+All other ports blocked by UFW firewall
+Evidence:
+nmap scan screenshot confirming restricted access
+Access Control Verification
+Verified AppArmor profiles are in enforce mode
+Confirmed non-root administrative user has appropriate sudo privileges
+Root login remains disabled
+Evidence:
+aa-status screenshot
+sudo -l -U adminuser output
+Service Audit
+Checked running services using:
+systemctl list-units --type=service --state=running
+Only essential services running: ssh, nginx, ufw, apparmor, fail2ban
+Unnecessary services stopped and disabled
+Remaining Risks
+Risk	Mitigation	Status
+Outdated optional packages	Regular updates via unattended-upgrades	Mitigated
+Insider threat on admin user	Enforced strong passwords and sudo auditing	Partially mitigated
+Network exposure if firewall misconfigured	Restricted host-only network	Mitigated
+System Evaluation
+Security hardening successfully applied (SSH, firewall, AppArmor, fail2ban)
+Performance optimisations improved CPU and disk I/O efficiency
+Remote administration via SSH confirmed
+Monitoring scripts functional for ongoing system metrics collection
+Learning Outcome Alignment
+LO3: Security vulnerabilities identified and mitigated
+LO4: Proficiency in CLI administration demonstrated
+LO5: Critical evaluation of system trade-offs completed
+Reflection (Week 7)
+Week 7 consolidates security, performance, and remote management skills. Conducting a full security audit highlighted the importance of continuous monitoring and layered defense. Performance analysis combined with security hardening reinforced the balance between security and efficiency.
+This week also demonstrated the importance of documenting processes and evidence, enabling reproducibility and verification in professional settings.

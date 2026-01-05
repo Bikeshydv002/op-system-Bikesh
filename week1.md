@@ -47,7 +47,7 @@ The system architecture is designed to isolate the server from direct internet a
 └───────────────────────────┼─────────────────────────────┘
                             │
                        Internet (NAT)
-📌 Figure W1-1: System architecture showing isolated server and administrative workstation.
+Figure W1-1: System architecture showing isolated server and administrative workstation.
 Network Design Rationale
 The server has no direct internet access, reducing its attack surface
 The workstation acts as the single management point, enforcing controlled access
@@ -55,7 +55,7 @@ A Host-Only network enables secure internal communication between systems
 NAT on the workstation allows controlled access for updates and downloads
 Static IP addressing ensures predictable and reliable SSH connectivity
 Design Trade-Off Considerations
-Isolating the server from the internet significantly improves security by limiting exposure to external threats. However, this design introduces additional administrative complexity when performing system updates or installing packages. This trade-off prioritises security over convenience and reflects real-world operating system design decisions commonly used in professional server environments.
+Isolating the server from the internet significantly improves security by limiting exposure to external threats. However, this design introduces additional administrative complexity when performing system updates or installing packages. This trade-off prioritises security over convenience and reflects real-world operating system design decisions used in professional server environments.
 Distribution Selection Justification
 Ubuntu Server 22.04 LTS
 Reasons for Selection
@@ -89,23 +89,19 @@ Adapter 2	Host-Only
 IP Address	192.168.56.102
 Gateway	192.168.56.1
 System Information Collection
-The following commands were executed on the Ubuntu Server via SSH from the workstation to verify system configuration and hardware allocation:
+The following commands were executed on the Ubuntu Server via SSH from the workstation to verify system configuration and resource allocation:
 uname -a
 free -h
 df -h
 ip addr
 lsb_release -a
-These commands were used to confirm operating system version, kernel details, memory allocation, disk usage, and network configuration.
+These commands confirm operating system version, kernel details, memory allocation, disk usage, and network configuration.
 Evidence — System Verification
-📸 System Evidence Screenshot Filename: week1.png
-📌 Figure W1-2: Command-line output confirming operating system version, memory, disk usage, and network configuration. The terminal prompt (username@server-hostname) is visible, demonstrating remote administration via SSH.
+📸 Screenshot Filename: week1.png
+Figure W1-2: Command-line output confirming OS version, memory, disk usage, and network configuration. The terminal prompt (username@server-hostname) is visible, demonstrating remote administration via SSH.
 Learning Outcome Alignment
 LO4: Demonstrated through command-line system inspection and remote verification of operating system configuration.
 LO5: Addressed by evaluating security versus usability trade-offs in system architecture and network design.
 Reflection (Week 1)
-This planning phase established a secure and controlled lab foundation. By isolating the server, limiting internet exposure, and enforcing clear role separation between systems, the environment is well-suited for:
-Security hardening
-Performance testing
-Controlled experimentation
-Real-world server administration scenarios
+This planning phase established a secure and controlled lab foundation. By isolating the server, limiting internet exposure, and enforcing clear role separation between systems, the environment is well-suited for security hardening, performance testing, controlled experimentation, and real-world server administration scenarios.
 The structured planning undertaken in this week ensures that later configuration, testing, and analysis can be conducted in a secure, repeatable, and professionally relevant manner.
